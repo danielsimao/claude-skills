@@ -225,19 +225,35 @@ Load and follow the `frontend-design` skill fully before generating any code.
 
 Write to `/tmp/wireframes.html` by default. If a `.wireframes/` directory exists in the project, write there instead. Only ask the user for a path if they explicitly requested a specific location.
 
-Build a polished, single-file HTML page with:
-- A header summarising the product idea and key discovery findings
-- Concept cards with clear visual hierarchy
+**CRITICAL: Web wireframes are visual UI mockups, NOT ASCII art in styled code blocks.** Each concept must render as a realistic HTML/CSS mockup of the actual interface — buttons, inputs, cards, icons, layout — that looks like a real product screenshot. Use the project's design tokens (colors, fonts, spacing, border radius) from the Phase 0 scan. Do NOT use `<pre>`, monospace fonts, or ASCII art for layout wireframes.
+
+### Page structure
+
+Build a single-file HTML page containing:
+- Header: product idea summary and key discovery findings
+- Per-concept section with label, description, and **multiple state mockups** shown side by side
 - If "both" viewports: a note per concept card describing the secondary viewport adaptation
 - Assessment ratings rendered as colored badges (Low / Medium / High / Very High)
 - Component reuse shown as a categorised tag list (✅ Reuse / 🔧 Extend / 🆕 New) — only if Phase 0 found UI components
 - A comparison table section
 - A final recommendation section with strong typographic emphasis
 
-Design requirements:
+### Per-concept wireframes
+
+- Render each UI state as a **realistic HTML/CSS mockup** of the product interface
+- Show multiple states side by side (e.g. "empty" → "filled" → "submitted") to convey the interaction flow
+- Label each state with a pill/badge (e.g. "Default", "Active", "Success")
+- Use the project's actual component patterns: input fields, buttons, cards, selectors, navigation, etc.
+- Match the product's visual language: dark/light theme, border radius, spacing, typography
+- Icons can be Unicode symbols or simple CSS shapes — no external icon libraries required
+- The mockups should be detailed enough that a developer can understand the layout, hierarchy, and interaction model without reading prose descriptions
+
+### Design requirements
+
 - Must not look generic. Commit to a clear aesthetic direction per the `frontend-design` skill.
 - Use the project's actual colors and font conventions if design tokens were found in the scan
 - If no tokens were found, use a distinctive but professional palette appropriate to the product domain
+- Each concept should be immediately visually distinguishable from the others
 
 ---
 

@@ -223,7 +223,29 @@ Deliver everything as structured markdown in the terminal. Use clear section hea
 
 Load and follow the `frontend-design` skill fully before generating any code.
 
-Write to `/tmp/wireframes.html` by default. If a `.wireframes/` directory exists in the project, write there instead. Only ask the user for a path if they explicitly requested a specific location.
+### Output location (priority order)
+
+1. **Explicit user path** — if the user requested a specific location, write there and stop. All other rules below are skipped.
+2. **Obsidian vault (default)** — if `~/Documents/Work` exists, write to `~/Documents/Work/Wireframes/<slug>.html` (slug construction below). This is the default for every invocation unless overridden by rule 1.
+3. **Fallback** — if `~/Documents/Work` does NOT exist, write to `/tmp/wireframes.html`. Use this only when the Obsidian vault directory is missing.
+
+`/tmp` is never the default. It is only used as the rule-3 fallback or when the user explicitly passes a `/tmp/...` path.
+
+### Slug construction (for the Obsidian default)
+
+`<slug>` is `<project>-<idea>` joined with a hyphen, where:
+
+- **`<project>`**: the git repo name detected during the Phase 0 scan, lowercased, non-alphanumerics replaced with `-`. **If no git repo is detected, omit the `<project>-` prefix entirely** — the filename becomes just `<idea>.html`.
+- **`<idea>`**: a 2–4-word kebab-case slug capturing the core noun phrase of the `/wireframes <idea>` argument. Pick semantically. Example: "Clean up the activity sidebar for the BOB soft relaunch" → `activity-sidebar`. Do NOT algorithmically truncate the full idea string — use judgment to pick a short meaningful slug.
+
+### Directory and collision handling
+
+Before writing:
+
+1. Run `mkdir -p ~/Documents/Work/Wireframes/` via Bash to ensure the target directory exists. This is idempotent — run it on every invocation.
+2. If `~/Documents/Work/Wireframes/<slug>.html` already exists, append `-v2` (then `-v3`, `-v4`, …) until you find an unused filename. **Never overwrite existing wireframes** — each invocation must produce a new file so iteration history is preserved.
+
+After writing, print the absolute path you wrote to.
 
 **CRITICAL: Web wireframes are visual UI mockups, NOT ASCII art in styled code blocks.** Each concept must render as a realistic HTML/CSS mockup of the actual interface — buttons, inputs, cards, icons, layout — that looks like a real product screenshot. Use the project's design tokens (colors, fonts, spacing, border radius) from the Phase 0 scan. Do NOT use `<pre>`, monospace fonts, or ASCII art for layout wireframes.
 
